@@ -8,6 +8,7 @@
 #include "Eigen-3.3/Eigen/Core"
 #include "Eigen-3.3/Eigen/QR"
 #include "json.hpp"
+#include "../PlannedPoints.h"
 
 using namespace std;
 
@@ -235,13 +236,11 @@ int main() {
 
           	json msgJson;
 
-          	vector<double> next_x_vals;
-          	vector<double> next_y_vals;
-
+            PlannedPoints plannedPoints;
 
           	// TODO: define a path made up of (x,y) points that the car will visit sequentially every .02 seconds
-          	msgJson["next_x"] = next_x_vals;
-          	msgJson["next_y"] = next_y_vals;
+          	msgJson["next_x"] = plannedPoints.next_x_vals;
+          	msgJson["next_y"] = plannedPoints.next_y_vals;
 
           	auto msg = "42[\"control\","+ msgJson.dump()+"]";
 
