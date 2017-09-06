@@ -1,8 +1,8 @@
 //
 // Created by hvrigazov on 31.08.17.
 //
-#ifndef PATHPLANNER_H
-#define PATHPLANNER_H
+#ifndef PLANNER_H
+#define PLANNER_H
 
 #include <map>
 #include <vector>
@@ -26,15 +26,12 @@ class Planner {
 
   TrajectoryPlanner trajectory_planner;
 
-public:
   Map map_;
 
-  CarPosition my_car_;
+  vector<CarPosition> findCarsThatAreNear();
 
-  std::map<int, CarPosition> other_cars_;
 
-  vector<double> next_x_values;
-  vector<double> next_y_values;
+public:
 
   Planner(Map map_file_);
 
@@ -42,10 +39,8 @@ public:
 
   PlannedPoints plan(const std::vector<double> &previous_path_x, const std::vector<double> &previous_path_y);
 
-  void generateIntermediatePoints();
+  CarPosition my_car_;
 
-  vector<CarPosition> findCarsThatAreNear();
-
-
+  std::map<int, CarPosition> other_cars_;
 };
-#endif /* PATHPLANNER_H */
+#endif /* PLANNER_H */

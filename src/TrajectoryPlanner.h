@@ -13,23 +13,13 @@
 #include "Eigen-3.3/Eigen/Core"
 #include "Eigen-3.3/Eigen/Dense"
 #include "CarPosition.h"
+#include "BehaviorState.h"
+#include "Trajectory.h"
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
 
 using namespace std;
-
-struct Trajectory {
-  vector<double> jmt;
-  double finish;
-  double duration;
-  bool completed;
-};
-
-enum BehaviorState {
-  KEEP_LANE, CHANGE_TO_LEFT_LANE, CHANGE_TO_RIGHT_LANE
-};
-
 
 class TrajectoryPlanner {
 private:
@@ -41,9 +31,11 @@ public:
   virtual ~TrajectoryPlanner();
 
   Trajectory jmt_v;
+
   double jmt_v_time;
 
   Trajectory jmt_d;
+
   double jmt_d_time;
 
   void generateGoals(Map &map, CarPosition car, vector<CarPosition> nearby_cars, double prev_v);

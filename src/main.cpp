@@ -62,7 +62,7 @@ int main() {
             auto json_data = j[1];
             planner.my_car_ = CarPosition(json_data);
 
-          	// Previous path data given to the Planner
+          // Previous path data given to the Planner
           	auto previous_path_x = j[1]["previous_path_x"];
           	auto previous_path_y = j[1]["previous_path_y"];
 

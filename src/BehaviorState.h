@@ -1,0 +1,14 @@
+//
+// Created by hvrigazov on 06.09.17.
+//
+
+#ifndef PATH_PLANNING_BEHAVIORSTATE_H
+#define PATH_PLANNING_BEHAVIORSTATE_H
+
+enum BehaviorState {
+  KEEP_LANE,
+  CHANGE_TO_LEFT_LANE,
+  CHANGE_TO_RIGHT_LANE
+};
+
+#endif //PATH_PLANNING_BEHAVIORSTATE_H

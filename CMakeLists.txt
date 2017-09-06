@@ -12,7 +12,7 @@ set(sources src/main.cpp
         src/Map.cpp
             src/Constants.h
             src/TrajectoryPlanner.cpp
-            src/spline.h src/PlannedPoints.h src/CarPosition.h src/Utils.h)
+            src/spline.h src/PlannedPoints.h src/CarPosition.h src/Utils.h src/BehaviorState.h src/Trajectory.h)
 
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")

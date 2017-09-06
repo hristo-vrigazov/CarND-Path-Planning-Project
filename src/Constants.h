@@ -20,7 +20,7 @@ const int INITIAL_LANE = 1;
 inline double mph2ms(double mph){
   return mph * 0.44704; 
 }
-const double TARGET_MAX_VEL = mph2ms(46);
+const double MAX_VELOCITY = mph2ms(46);
 
 inline double deg2rad(double x) { return x * M_PI / 180; }
 inline double rad2deg(double x) { return x * 180 / M_PI; }

@@ -21,8 +21,8 @@ PlannedPoints Planner::plan(const std::vector<double> & previous_path_x,
     initialized = true;
   }
 
-  next_x_values.clear();
-  next_y_values.clear();
+  vector<double> next_x_values;
+  vector<double> next_y_values;
 
   unsigned long path_size = previous_path_x.size();
   for (int i = 0; i < path_size; i++) {
@@ -32,30 +32,25 @@ PlannedPoints Planner::plan(const std::vector<double> & previous_path_x,
 
   vector<CarPosition> carsThatAreNear = findCarsThatAreNear();
   trajectory_planner.generateGoals(map_, my_car_, carsThatAreNear, previous_v);
-  generateIntermediatePoints();
+
+  while(next_x_values.size() < NUMBER_OF_INTERMEDIATE_POINTS) {
+    trajectory_planner.jmt_v_time += SAMPLING_RATE;
+    previous_v = trajectory_planner.getDeltaV(trajectory_planner.jmt_v_time);
+
+    previous_v = (previous_v > MAX_VELOCITY) ? MAX_VELOCITY : previous_v;
+
+    previous_s = previous_s + previous_v * SAMPLING_RATE;
+
+    trajectory_planner.jmt_d_time += SAMPLING_RATE;
+    previous_d = trajectory_planner.getDeltaD(trajectory_planner.jmt_d_time);
+
+    // Map to spline
+    vector<double> new_xy = map_.getXY(previous_s, previous_d);
+    next_x_values.push_back(new_xy[0]);
+    next_y_values.push_back(new_xy[1]);
+  }
+
   return PlannedPoints(next_x_values, next_y_values);
-}
-
-void Planner::generateIntermediatePoints() {
-  vector<double> new_xy;
-	while(next_x_values.size() < NUMBER_OF_INTERMEDIATE_POINTS) {
-		trajectory_planner.jmt_v_time += SAMPLING_RATE;
-		previous_v = trajectory_planner.getDeltaV(trajectory_planner.jmt_v_time);
-		
-		previous_v = (previous_v > TARGET_MAX_VEL) ? TARGET_MAX_VEL : previous_v;
-
-		previous_s = previous_s + previous_v * SAMPLING_RATE;
-
-		trajectory_planner.jmt_d_time += SAMPLING_RATE;
-		previous_d = trajectory_planner.getDeltaD(trajectory_planner.jmt_d_time);
-
-		// Map to spline
-		new_xy = map_.getXY(previous_s, previous_d);
-		next_x_values.push_back(new_xy[0]);
-		next_y_values.push_back(new_xy[1]);
-	}
-
-	
 }
 
 // C++ does not have stream API or something similar, so we are stuck with this implementation
@@ -63,9 +58,9 @@ vector<CarPosition> Planner::findCarsThatAreNear() {
 	vector<CarPosition> cars;
 
 	for (auto const & x : other_cars_) {
-		CarPosition t_car = x.second;
-		if (t_car.distance_to_my_car < CAR_IS_NEAR_THRESHOLD) {
-			cars.push_back(t_car);
+		CarPosition car_position = x.second;
+		if (car_position.distance_to_my_car < CAR_IS_NEAR_THRESHOLD) {
+			cars.push_back(car_position);
 		}
 	}
 

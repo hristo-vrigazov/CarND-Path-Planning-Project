@@ -42,7 +42,7 @@ BehaviorState TrajectoryPlanner::getMinimumCostBehavior(CarPosition car, vector<
   int lane = getLaneNumber(car.d);
 
   // Keep lane
-  double kl_cost = logistic(TARGET_MAX_VEL / getLaneSpeed(lane, car, nearby_cars));
+  double kl_cost = logistic(MAX_VELOCITY / getLaneSpeed(lane, car, nearby_cars));
   costs.push_back(kl_cost);
 
   double lcl_cost = 1;
@@ -96,7 +96,7 @@ TrajectoryPlanner::calculateLaneChangeCost(int from_lane, int to_lane, const Car
     return 1;
   }
 
-  return logistic(TARGET_MAX_VEL / getLaneSpeed(to_lane, car, nearby_cars));
+  return logistic(MAX_VELOCITY / getLaneSpeed(to_lane, car, nearby_cars));
 
 }
 
@@ -109,7 +109,7 @@ double TrajectoryPlanner::getLaneSpeed(int lane, const CarPosition & car, vector
   if (nearbyInLane.size() > 0 && distanceS(car.s, nearbyInLane[0].s) < 50)
     return nearbyInLane[0].speed;
   else
-    return TARGET_MAX_VEL;
+    return MAX_VELOCITY;
 }
 
 void TrajectoryPlanner::applyLaneChange(int from_lane, int to_lane, CarPosition car, vector<CarPosition> nearby_cars) {
@@ -130,7 +130,7 @@ TrajectoryPlanner::applyKeepLaneBehavior(double current_speed, const CarPosition
 
   double min_dist = car.speed * 2;
 
-  double target_speed = TARGET_MAX_VEL;
+  double target_speed = MAX_VELOCITY;
 
   if (nearbyInLane.size() > 0 && distanceS(nearbyInLane[0].s, car.s) < min_dist) {
     target_speed = nearbyInLane[0].speed;
@@ -177,7 +177,7 @@ double TrajectoryPlanner::getDeltaD(double t) {
 void TrajectoryPlanner::adjustTargetSpeed(double currentSpeed, double targetSpeed, double deltaT) {
 
 
-  targetSpeed = (targetSpeed > TARGET_MAX_VEL) ? TARGET_MAX_VEL : targetSpeed;
+  targetSpeed = (targetSpeed > MAX_VELOCITY) ? MAX_VELOCITY : targetSpeed;
 
   double max = fabs(targetSpeed - currentSpeed) / TARGET_ACCEL;
   deltaT = (deltaT == 0 || deltaT > max) ? max : deltaT;
