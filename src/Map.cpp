@@ -40,7 +40,7 @@ Map::~Map(){}
 
 void Map::padSplines() {
 	for(int i = 0; i < 10; i++) {
-		maps_s.push_back(maps_s[i]+MAX_S);
+		maps_s.push_back(maps_s[i] + MAX_S);
 		maps_x.push_back(maps_x[i]);
 		maps_y.push_back(maps_y[i]);
 		maps_dx.push_back(maps_dx[i]);
@@ -53,19 +53,16 @@ void Map::padSplines() {
   spline_dy.set_points(maps_s, maps_dy);
 }
 
-// Transform from Frenet s,d coordinates to Cartesian x,y
 vector<double> Map::getXY(double s, double d)
 {
 	if(s < 30){
 		s += MAX_S;
 	}
 
-	const double x = spline_x(s) + spline_dx(s) * (d-0.2);
-	const double y = spline_y(s) + spline_dy(s) * (d-0.2);
+	const double x = spline_x(s) + spline_dx(s) * (d - 0.2);
+	const double y = spline_y(s) + spline_dy(s) * (d - 0.2);
 
 	return {x,y};
-
-
 }
 
 

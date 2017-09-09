@@ -32,11 +32,9 @@ public:
 
   Trajectory jmt_v;
 
-  double jmt_v_time;
+  double timeline;
 
   Trajectory jmt_d;
-
-  double jmt_d_time;
 
   void generateGoals(Map &map, CarPosition car, vector<CarPosition> nearby_cars, double prev_v);
 

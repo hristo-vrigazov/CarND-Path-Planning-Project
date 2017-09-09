@@ -47,13 +47,13 @@ BehaviorState TrajectoryPlanner::getMinimumCostBehavior(CarPosition car, vector<
 
   double lcl_cost = 1;
   if (lane != 0) {
-    lcl_cost = calculateLaneChangeCost(lane, lane - 1, car, nearby_cars) + 0.05;
+    lcl_cost = calculateLaneChangeCost(lane, lane - 1, car, nearby_cars);
   }
   costs.push_back(lcl_cost);
 
   double rcl_cost = 1;
   if (lane != 2) {
-    rcl_cost = calculateLaneChangeCost(lane, lane + 1, car, nearby_cars) + 0.05;
+    rcl_cost = calculateLaneChangeCost(lane, lane + 1, car, nearby_cars);
   }
   costs.push_back(rcl_cost);
 
@@ -133,7 +133,7 @@ TrajectoryPlanner::applyKeepLaneBehavior(double current_speed, const CarPosition
   double target_speed = MAX_VELOCITY;
 
   if (nearbyInLane.size() > 0 && distanceS(nearbyInLane[0].s, car.s) < min_dist) {
-    target_speed = nearbyInLane[0].speed;
+    target_speed = nearbyInLane[0].speed - 5;
     if (distanceS(nearbyInLane[0].s, car.s) < 10) {
       cout << "Very close, almost colided!\n";
       target_speed -= 5;
@@ -175,8 +175,6 @@ double TrajectoryPlanner::getDeltaD(double t) {
 }
 
 void TrajectoryPlanner::adjustTargetSpeed(double currentSpeed, double targetSpeed, double deltaT) {
-
-
   targetSpeed = (targetSpeed > MAX_VELOCITY) ? MAX_VELOCITY : targetSpeed;
 
   double max = fabs(targetSpeed - currentSpeed) / TARGET_ACCEL;
@@ -190,12 +188,10 @@ void TrajectoryPlanner::adjustTargetSpeed(double currentSpeed, double targetSpee
   jmt_v.duration = deltaT;
   jmt_v.completed = false;
 
-  jmt_v_time = 0;
+  timeline = 0;
 }
 
 void TrajectoryPlanner::adjustTargetLane(int currentLane, int targetLane, double deltaT) {
-  jmt_d_time = 0;
-
   if (currentLane == targetLane) {
     deltaT = 0;
   } else {

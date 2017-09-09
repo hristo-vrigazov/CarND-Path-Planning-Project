@@ -34,15 +34,14 @@ PlannedPoints Planner::plan(const std::vector<double> & previous_path_x,
   trajectory_planner.generateGoals(map_, my_car_, carsThatAreNear, previous_v);
 
   while(next_x_values.size() < NUMBER_OF_INTERMEDIATE_POINTS) {
-    trajectory_planner.jmt_v_time += SAMPLING_RATE;
-    previous_v = trajectory_planner.getDeltaV(trajectory_planner.jmt_v_time);
+    trajectory_planner.timeline += SAMPLING_RATE;
+    previous_v = trajectory_planner.getDeltaV(trajectory_planner.timeline);
 
     previous_v = (previous_v > MAX_VELOCITY) ? MAX_VELOCITY : previous_v;
 
     previous_s = previous_s + previous_v * SAMPLING_RATE;
 
-    trajectory_planner.jmt_d_time += SAMPLING_RATE;
-    previous_d = trajectory_planner.getDeltaD(trajectory_planner.jmt_d_time);
+    previous_d = trajectory_planner.getDeltaD(trajectory_planner.timeline);
 
     // Map to spline
     vector<double> new_xy = map_.getXY(previous_s, previous_d);
