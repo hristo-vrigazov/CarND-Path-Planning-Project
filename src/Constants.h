@@ -10,9 +10,9 @@ const double LANE_WIDTH = 4;
 
 const double SAMPLING_RATE = 0.02;
 
-const double TARGET_ACCEL = 1;
+const double TARGET_ACCEL = 3;
 
-const double LANE_CHANGE_TIME = 3;
+const double LANE_CHANGE_TIME = 4;
 
 // 3 lanes, start in the middle
 const int INITIAL_LANE = 1;
