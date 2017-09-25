@@ -1,34 +1,25 @@
 //
-// Created by hvrigazov on 31.08.17.
+// Created by hvrigazov on 18.09.17.
 //
-#ifndef CONSTANTS_H
-#define CONSTANTS_H
 
-#include <math.h>
+#ifndef PATH_PLANNING_CONSTANTS_H
+#define PATH_PLANNING_CONSTANTS_H
 
+static constexpr double MPH2MPS = 0.44704;
+
+const double ACCELERATION = 0.2;
+const double GAP_THRESHOLD = 50;
+const double NEEDED_DISTANCE_IN_FRONT_FOR_LANE_CHANGE = 20;
+const double NEEDED_DISTANCE_FROM_BACK_FOR_LANE_CHANGE = 10;
+const double NEEDED_SPEED_FOR_LANE_CHANGE = 30.0 * MPH2MPS;
+
+const int NUMBER_OF_POINTS = 50;
+
+const double SPEED_LIMIT = 50;
 const double LANE_WIDTH = 4;
+const double TIME_BETWEEN_EVENTS = 0.02;
+const double KEEP_LANE_BONUS = -0.1;
 
-const double SAMPLING_RATE = 0.02;
+const double HORIZON = 30;
 
-const double TARGET_ACCEL = 3;
-
-const double LANE_CHANGE_TIME = 4;
-
-// 3 lanes, start in the middle
-const int INITIAL_LANE = 1;
-
-inline double mph2ms(double mph){
-  return mph * 0.44704; 
-}
-const double MAX_VELOCITY = mph2ms(45);
-
-inline double deg2rad(double x) { return x * M_PI / 180; }
-inline double rad2deg(double x) { return x * 180 / M_PI; }
-
-const double MAX_S = 6945.554;
-
-const double CAR_IS_NEAR_THRESHOLD = 150;
-const double NUMBER_OF_INTERMEDIATE_POINTS = 50;
-
-
-#endif /* CONSTANTS_H */
+#endif //PATH_PLANNING_CONSTANTS_H
