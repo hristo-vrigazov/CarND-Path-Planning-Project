@@ -12,3 +12,36 @@ The entry point is `PathPlanner#plan`, which accepts as input `TelemetryData`, w
 is a serialized class using the converters defined n `JsonConverters`. The `PathPlanner#plan`
 returns the path that the car should follow and those points are sent to the simulator.
 
+### Pipeline
+
+```
+Path PathPlanner::plan(const TelemetryData &data) {
+  update(data);
+  lane = lane_at(current.frenet.d);
+  compute_predictions(data);
+  create_plan(data);
+  adjust_speed();
+  return generate_trajectory(data);
+}
+```
+
+First, we update the fields of the `PathPlanner` object. Then:
+ 
+1. We make predictions based on the data we received by computing a predicted gap between the cars in front and in the back
+for every of the lane.
+2. We do behavior planning based on cost functions for actions. This means that we choose whether
+we should keep our lane or change our lane. This is done by computing a cost function for each lane,
+which looks like this:
+
+```
+  double cost() const {
+    return log((behind.speed) / (in_front.gap + behind.gap + in_front.speed));
+  }
+```
+
+The cost function was designed in this way because we want to:
+* Avoid lanes where the vehicle behind us has faster speed, so if the `behind.speed` is high, 
+ the cost should be high as well.
+* Prefer lanes in which the gap from the car in front and the gap to the car behind is bigger
+* Prefer lanes in which the car in front is moving faster. This way we have more potential room
+to operate with.

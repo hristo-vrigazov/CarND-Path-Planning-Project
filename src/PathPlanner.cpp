@@ -53,8 +53,7 @@ void PathPlanner::compute_predictions(const TelemetryData &data) {
     if (predicted_gap > 0 && absolute_predicted_gap < lane.in_front.gap) {
       lane.in_front.gap = absolute_predicted_gap;
       lane.in_front.speed = car_speed;
-    }
-    else if (absolute_predicted_gap < lane.behind.gap) {
+    } else if (absolute_predicted_gap < lane.behind.gap) {
       lane.behind.gap = absolute_predicted_gap;
       lane.behind.speed = car_speed;
     }
