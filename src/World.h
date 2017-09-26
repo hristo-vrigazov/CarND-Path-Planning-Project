@@ -20,7 +20,6 @@ class World {
 public:
   World(const string & filename);
 
-  // The max s value before wrapping around the track back to 0
   const double max_s = 6945.554;
 
   CartesianPoint to_xy(double s, double d) const;
