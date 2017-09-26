@@ -185,7 +185,6 @@ tk::spline PathPlanner::create_spline() const {
     trajectory_points.y[i] = dx * sin(-current.yaw) + dy * cos(-current.yaw);
   }
 
-  // Interpolate the anchors with a cubic spline
   tk::spline spline;
   spline.set_points(trajectory_points.x, trajectory_points.y);
   return spline;
