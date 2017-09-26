@@ -9,8 +9,8 @@ Path PathPlanner::plan(const TelemetryData &data) {
   lane = lane_at(current.frenet.d);
   compute_predictions(data);
   create_plan(data);
-  speed_control();
-  return build_path(data);
+  adjust_speed();
+  return generate_trajectory(data);
 }
 
 void PathPlanner::update(const TelemetryData &data) {
@@ -137,19 +137,15 @@ void PathPlanner::handle_start_state() {
   handle_keep_lane_state();
 }
 
-void PathPlanner::speed_control() {
-  // Adjust speed
+void PathPlanner::adjust_speed() {
   if (target_speed < current.speed) {
-    // deccelerate
     target_speed = fmax(target_speed, current.speed - ACCELERATION);
-  }
-  else if (target_speed > current.speed) {
-    // accelerate
+  } else {
     target_speed = fmin(target_speed, current.speed + ACCELERATION);
   }
 }
 
-Path PathPlanner::build_path(const TelemetryData &data) {
+Path PathPlanner::generate_trajectory(const TelemetryData &data) {
   tk::spline spline = create_spline();
 
   Path path;

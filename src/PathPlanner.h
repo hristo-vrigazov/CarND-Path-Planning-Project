@@ -56,9 +56,9 @@ private:
 
   void create_plan(const TelemetryData &data);
 
-  void speed_control();
+  void adjust_speed();
 
-  Path build_path(const TelemetryData &data);
+  Path generate_trajectory(const TelemetryData &data);
 
   double get_speed_limit() const;
 
